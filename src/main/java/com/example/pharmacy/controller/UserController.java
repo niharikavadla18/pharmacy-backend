@@ -1,4 +1,3 @@
-```java
 package com.example.pharmacy.controller;
 
 import com.example.pharmacy.entity.User;
@@ -68,4 +67,3 @@ public class UserController {
         return response;
     }
 }
-```
