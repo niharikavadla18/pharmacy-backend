@@ -1,3 +1,4 @@
+```java
 package com.example.pharmacy.controller;
 
 import com.example.pharmacy.entity.User;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/user")
@@ -40,10 +42,18 @@ public class UserController {
                         user.getPassword()
                 );
 
+        String role = loggedInUser.getRole();
+
+        if (role != null) {
+            role = role.trim()
+                    .replaceFirst("(?i)^ROLE_", "")
+                    .toUpperCase(Locale.ROOT);
+        }
+
         String token =
                 jwtService.generateToken(
                         loggedInUser.getEmail(),
-                        loggedInUser.getRole()
+                        role
                 );
 
         Map<String, Object> response =
@@ -52,9 +62,10 @@ public class UserController {
         response.put("id", loggedInUser.getId());
         response.put("name", loggedInUser.getName());
         response.put("email", loggedInUser.getEmail());
-        response.put("role", loggedInUser.getRole());
+        response.put("role", role);
         response.put("token", token);
 
         return response;
     }
 }
+```
